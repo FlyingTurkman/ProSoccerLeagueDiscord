@@ -7,6 +7,6 @@ export const Hello : Command = {
     run : async (client: Client, interaction: CommandInteraction)=>{
         const content = '2 dakika rahat bırakmadınız'
 
-        await interaction.reply({content,ephemeral:true})
+        await interaction.followUp({content,ephemeral:true})
     }
 }
