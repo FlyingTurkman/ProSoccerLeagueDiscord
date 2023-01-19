@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "cls && node dist/index.js"
+    "start": "ts-node ./src/index.ts"
   },
   "author": "Sharkman",
   "license": "GPL-3.0",
