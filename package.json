@@ -10,6 +10,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "discord.js": "^14.7.1",
+    "ts-node": "^10.9.1",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
