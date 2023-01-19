@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "cls && node dist/index.js"
   },
   "author": "Sharkman",
   "license": "GPL-3.0",
   "dependencies": {
     "discord.js": "^14.7.1",
-    "ts-node": "^10.9.1",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
