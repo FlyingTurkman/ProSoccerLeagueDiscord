@@ -1,7 +1,8 @@
 import { Client, CommandInteraction, Interaction, InteractionReplyOptions, Options } from "discord.js";
+import { LookingForTeam } from "../commands/looking_for_team";
 import { Commands } from "../Commands";
 import { Test } from "../commands/test";
-
+import { CreateRegion } from "../commands/create_region";
 
 
 export default (client: Client): void => {
@@ -20,6 +21,8 @@ async function handleSlashCommand (client: Client, interaction: CommandInteracti
     }
 
     if(slashCommand===Test) await interaction.deferReply()
+
+    if (slashCommand===LookingForTeam) await interaction.deferReply()
 
     slashCommand?.run(client, interaction)
 }

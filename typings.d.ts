@@ -1,9 +1,14 @@
 export {}
 
+
+
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            botToken:string
+            botToken: string,
+            mongoUri: string,
+            appPath: string
         }
     }
 }
+
