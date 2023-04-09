@@ -8,24 +8,24 @@ const { Schema } = mongoose
 export const regionSchema = new Schema({
     guildId: {
         type: String,
-        required: true
+        require: true
     },
     ownerId: {
         type: String,
-        required: true
+        require: true
     },
     admins: [
         {adminId: {
             type: String,
-            required: true
+            require: true
         }}
     ],
     regionName: {
         type: String,
-        required: true
+        require: true
     },
     reagionLogo: {
         type: String,
-        required: true
+        require: true
     }
 })
