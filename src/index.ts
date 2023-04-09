@@ -25,4 +25,5 @@ ready(client)
 interactionCreate(client)
 
 
+
 client.login(process.env.botToken)
