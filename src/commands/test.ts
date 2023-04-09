@@ -1,17 +1,17 @@
-import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
-import { Command } from "../Command";
+import { CommandInteraction, Interaction, SlashCommandBuilder } from "discord.js";
 
 
 
-export const Test: Command = {
-    name: 'test',
-    description: 'deneme',
-    run: async (client: Client, interaction: CommandInteraction) => {
-        const content = 'deneme aq'
-        const embed = new EmbedBuilder().setDescription('Pong!');
-        await interaction.followUp({
-            ephemeral: true,
-            content
+
+
+export default {
+    data: new SlashCommandBuilder()
+        .setName('test')
+        .setDescription('TEST'),
+    async execute (interaction: CommandInteraction) {
+        await interaction.reply({
+            content: 'test',
+            ephemeral: true
         })
     }
 }
