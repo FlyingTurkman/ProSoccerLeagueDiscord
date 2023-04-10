@@ -76,25 +76,25 @@ export const teamSchema = new Schema({
 export const transferOfferSchema = new Schema({
     fromTeam: {
         type: String,
-        require: true
+        required: true
     },
     toPlayer: {
         type: String,
-        require: true
+        required: true
     },
     accepted: {
         type: Boolean,
-        require: true,
+        required: true,
         default: false
     },
     rejected: {
         type: Boolean,
-        require: true,
+        required: true,
         default: false
     },
     dateTime: {
         type: Number,
-        require: true,
+        required: true,
         default: new Date().getTime()
     }
 })

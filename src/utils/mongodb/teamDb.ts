@@ -1,4 +1,5 @@
 import { Team } from "./Models";
+import { ObjectId } from "mongoose";
 
 
 
@@ -60,6 +61,20 @@ export async function checkIsCoCaptainSameTeam({captainId, coCaptainId}: {captai
         ]
     })
     if (check) {
+        return true
+    }else {
+        return false
+    }
+}
+
+
+export async function updatePlayerTeam({playerId, teamId}: {playerId: string, teamId: string}): Promise<boolean> {
+    const update = await Team.findOneAndUpdate({
+        teamId
+    }, {$addToSet: {
+        members: playerId
+    }})
+    if (update) {
         return true
     }else {
         return false

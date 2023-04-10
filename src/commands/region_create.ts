@@ -48,7 +48,7 @@ export const CreateRegion: Command = {
                 reagionLogo: avatar
             })
             await interaction.reply({
-                content: regionName?.toString(),
+                content: `${regionName.toString()} succesfully created.`,
                 ephemeral: true
             })
         } catch (error) {

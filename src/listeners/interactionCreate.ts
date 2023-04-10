@@ -1,16 +1,12 @@
-import { CommandInteraction, Client, Interaction, CacheType, ButtonInteraction } from "discord.js";
+import { CommandInteraction, Client, Interaction } from "discord.js";
 import { Commands } from "../Commands";
-import { Hello } from "../commands/hello";
-import { TransferPlayer } from "../commands/transfer_player";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { Events } from "../events/Events";
 
 
 export default (client: Client): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
         if (interaction.isButton()) {
-            if (interaction.customId == 'button') {
-                await interaction.reply('tıkalam')
-            }
+            await handleButtonCommand(interaction.customId, client, interaction)
         }
         if (interaction.isCommand()) {
             await handleSlashCommand(client, interaction);
@@ -25,8 +21,19 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         return;
     }
     slashCommand.run(client, interaction);
-
 };
+
+
+const handleButtonCommand = async (customId: string, client: Client, interaction: Interaction): Promise<void> => {
+    const event = Events.find((e) => customId.startsWith(e.customId))
+    if (!event) {
+        if (interaction.isRepliable()){
+            interaction.followUp({ content: "An error has occurred" })
+        }
+        return
+    }
+    event.run(client, interaction)    
+}
 
 
 

@@ -3,6 +3,7 @@ import { Command } from "../Command";
 import { USER } from "../utils/src/options";
 import { checkIsPlayerTeamCaptainOrCoCaptain, checkPlayerInTeam } from "../utils/mongodb/teamDb";
 import { Team } from "../utils/mongodb/Models";
+import { TransferOffer } from "../utils/mongodb/Models";
 
 
 
@@ -25,14 +26,39 @@ export const TransferPlayer: Command = {
             return
         }
         const captainTeam = await Team.findOne({teamId: isPlayerCanOffer})
+        const playerTeam = await checkPlayerInTeam({playerId: user?.toString()})
+        if (playerTeam?.captainId == user || playerTeam?.coCaptainId == user) {
+            await interaction.reply({
+                content: "You can not send transfer offer other team's captain or co-captain",
+                ephemeral: true
+            })
+            return
+        }
+        if (playerTeam?.teamId == captainTeam?.teamId) {
+            await interaction.reply({
+                content: 'This player already member of your team.',
+                ephemeral: true
+            })
+            return
+        }
+        const offer = await TransferOffer.create({
+            fromTeam: captainTeam?.teamId || '',
+            toPlayer: user.toString()
+        })
+        if (!offer) {
+            await interaction.reply({
+                content: 'An error has occurred. Please try again.'
+            })
+            return
+        }
         const row = new ActionRowBuilder<ButtonBuilder>()
         row.addComponents(
             new ButtonBuilder()
-                .setCustomId('accept_transfer_offer')
+                .setCustomId(`accept_transfer_offer_${offer._id.toString()}`)
                 .setLabel('Accept')
                 .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
-                .setCustomId('reject_transfer_offer')
+                .setCustomId(`reject_transfer_offer_${offer._id.toString()}`)
                 .setLabel('Reject')
                 .setStyle(ButtonStyle.Danger)
         )
@@ -47,7 +73,6 @@ export const TransferPlayer: Command = {
             embeds: [embed],
             components: [row]
         })
-        const playerTeam = await checkPlayerInTeam({playerId: user?.toString()})
         if (playerTeam) {
             const transferChannel = client.channels.cache.get(playerTeam.transferChannel || '')
             if (transferChannel?.isTextBased()) {
@@ -57,24 +82,10 @@ export const TransferPlayer: Command = {
                     components: [row]
                 })
             }
-        }else {
-
         }
-
         await interaction.reply({
             content: 'Transfer offer succesfully sended. Waiting for answer',
             ephemeral: true
         })
-        /* const row = new ActionRowBuilder<ButtonBuilder>()
-        row.addComponents(
-            new ButtonBuilder()
-                .setCustomId('button')
-                .setLabel('click Me')
-                .setStyle(ButtonStyle.Primary)
-        )
-        const embed = new EmbedBuilder()
-        embed.setColor('Red')
-        embed.setTitle('Test')
-        client.users.cache.get(captainId)?.send({embeds: [embed], components: [row]}) */
     }
 }
