@@ -29,9 +29,10 @@ mongoose.connect(process.env.mongoUri || '', {dbName: 'proSoccerLeague'})
 ready(client)
 interactionCreate(client)
 
-cron.schedule('5 * * * * *', () => {
+cron.schedule('*/10 * * * * *', () => {
     lineupDisconnect(client)
 })
+
 
 
 

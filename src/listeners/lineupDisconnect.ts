@@ -1,11 +1,10 @@
-import { BaseInteraction, Client, CommandInteraction, Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { Client, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { Lineup, Region } from "../utils/mongodb/Models";
 import { ObjectId } from "mongodb";
 
 
 
 export default async function lineupDisconnect(client: Client) {
-    console.log('working')
     for await (const lineup of Lineup.find()) {
         if (!lineup) return
         const guild = client.guilds.cache.get(lineup.guildId)
@@ -19,7 +18,7 @@ export default async function lineupDisconnect(client: Client) {
                 await client.users.cache.get(user.id)?.send({
                     content: `You went offline. You are removed from ${guild.name}'s lineup.`
                 })
-                await refreshLineup({client, lineup})
+                await refreshLineup({client, lineup, userId: user.id})
             }
         }
         for (const mid of lineup.midfielders) {
@@ -31,7 +30,7 @@ export default async function lineupDisconnect(client: Client) {
                 await client.users.cache.get(user.id)?.send({
                     content: `You went offline. You are removed from ${guild.name}'s lineup.`
                 })
-                await refreshLineup({client, lineup})
+                await refreshLineup({client, lineup, userId: user.id})
             }
         }
         for (const def of lineup.defenders) {
@@ -43,7 +42,7 @@ export default async function lineupDisconnect(client: Client) {
                 await client.users.cache.get(user.id)?.send({
                     content: `You went offline. You are removed from ${guild.name}'s lineup.`
                 })
-                await refreshLineup({client, lineup})
+                await refreshLineup({client, lineup, userId: user.id})
             }
         }
         for (const gk of lineup.goalkeepers) {
@@ -55,7 +54,7 @@ export default async function lineupDisconnect(client: Client) {
                 await client.users.cache.get(user.id)?.send({
                     content: `You went offline. You are removed from ${guild.name}'s lineup.`
                 })
-                await refreshLineup({client, lineup})
+                await refreshLineup({client, lineup, userId: user.id})
             }
         }
 
@@ -69,11 +68,10 @@ async function removePlayer({lineupId, playerId}: {lineupId: string, playerId: s
     }, {
         $pull: {attackers: playerId, midfielders: playerId, defenders: playerId, goalkeepers: playerId}
     })
-    console.log('removed')
 }
 
 
-async function refreshLineup({client, lineup}: {client: Client, lineup: any}) {
+async function refreshLineup({client, lineup, userId}: {client: Client, lineup: any, userId: string}) {
     const newLineup = await Lineup.findOne({guildId: lineup.guildId})
     if (!newLineup) {
         console.log('Lineup doesnt exist')
@@ -84,6 +82,7 @@ async function refreshLineup({client, lineup}: {client: Client, lineup: any}) {
         console.log('Region doesnt exist')
         return
     }
+    const user = client.users.cache.get(userId)
     const totalPlayers = newLineup.attackers.length + newLineup.midfielders.length + newLineup.defenders.length + newLineup.goalkeepers.length
     const embed = new EmbedBuilder()
     embed.setTitle('Matchmaking')
@@ -97,7 +96,13 @@ async function refreshLineup({client, lineup}: {client: Client, lineup: any}) {
         {name: 'Goalkeepers', value: `${newLineup.goalkeepers.length}`}
     )
     embed.setFooter(
-        {text: `${region.regionName}`, iconURL: client.guilds.cache.get(region.guildId)?.iconURL() || ''}
+        {text: `${region.regionName}`, iconURL: client.guilds.cache.get(region.guildId)?.iconURL() || ''},
+    )
+    const embedFoot = new EmbedBuilder()
+    const time = new Date().toLocaleTimeString()
+    embedFoot.setColor('DarkRed')
+    embedFoot.addFields(
+        {name: `${client.users.cache.get(userId)?.username} went offline`, value: `${time}`}
     )
     const row = new ActionRowBuilder<ButtonBuilder>()
     row.addComponents(
@@ -125,8 +130,8 @@ async function refreshLineup({client, lineup}: {client: Client, lineup: any}) {
     const textChannel = client.channels.cache.get(region.lineupChannel || '')
     if (textChannel?.isTextBased()) {
         await textChannel.send({
-            content: 'A player went offline',
-            embeds: [embed],
+            //content: `${user?.username} ( <@${userId}> ) went offline`,
+            embeds: [embed, embedFoot],
             components: [row]
         })
     }
