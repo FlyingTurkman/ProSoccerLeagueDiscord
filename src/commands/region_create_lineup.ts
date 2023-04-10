@@ -62,28 +62,23 @@ export const RegionCreateLineup: Command = {
             new ButtonBuilder()
                 .setCustomId(`join_as_attacker_${lineup._id.toString()}`)
                 .setLabel('Join as Attacker')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(lineup.attackers.includes(user)? true: false),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId(`join_as_midfielder_${lineup._id.toString()}`)
                 .setLabel('Join as Midfielder')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(lineup.midfielders.includes(user)? true: false),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId(`join_as_defender_${lineup._id.toString()}`)
                 .setLabel('Join as Defender')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(lineup.defenders.includes(user)? true: false),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId(`join_as_goalkeeper_${lineup._id.toString()}`)
                 .setLabel('Join as Goalkeeper')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(lineup.goalkeepers.includes(user)? true: false),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
-                .setCustomId('leave_queue')
+                .setCustomId(`leave_queue_${lineup._id.toString()}`)
                 .setLabel('Leave')
                 .setStyle(ButtonStyle.Danger)
-                .setDisabled(lineup.attackers.includes(user)? false : lineup.midfielders.includes(user)? false : lineup.defenders.includes(user)? false : lineup.goalkeepers.includes(user)? false : true)
         )
         const textChannel = client.channels.cache.get(region.lineupChannel || '')
         if (textChannel?.isTextBased()) {

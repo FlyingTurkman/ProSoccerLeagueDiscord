@@ -5,12 +5,12 @@ import { ObjectId } from "mongodb";
 
 
 
-const customId = 'join_as_attacker_'
+const customId = 'join_as_defender_'
 
 
-export const JoinAsAttacker: buttonInteractionType = {
+export const JoinAsDefender: buttonInteractionType = {
     customId,
-    run: async(client: Client, interaction: Interaction) => {
+    run: async (client: Client, interaction: Interaction) => {
         if (!interaction.isButton()) return
         const user = interaction.user.id || ''
         const lineupId = interaction.customId.replaceAll(customId, '')
@@ -23,8 +23,8 @@ export const JoinAsAttacker: buttonInteractionType = {
         const lineup = await Lineup.findOneAndUpdate({
             _id: new ObjectId(lineupId)
         }, {
-            $addToSet: {attackers: user},
-            $pull: {midfielders: user, defenders: user, goalkeepers: user}
+            $addToSet: {defenders: user},
+            $pull: {attackers: user, midfielders: user, goalkeepers: user}
         })
         if (!lineup) {
             await interaction.reply({content: 'Lineup has not exist.', ephemeral: true})
@@ -71,7 +71,7 @@ export const JoinAsAttacker: buttonInteractionType = {
             new ButtonBuilder()
                 .setCustomId(`leave_queue_${newLineup._id.toString()}`)
                 .setLabel('Leave')
-                .setStyle(ButtonStyle.Danger),
+                .setStyle(ButtonStyle.Danger)
         )
         const textChannel = client.channels.cache.get(region.lineupChannel || '')
         if (textChannel?.isTextBased()) {
