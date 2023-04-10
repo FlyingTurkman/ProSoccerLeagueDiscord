@@ -8,30 +8,40 @@ const { Schema } = mongoose
 export const regionSchema = new Schema({
     guildId: {
         type: String,
-        require: true
+        required: true
     },
     ownerId: {
         type: String,
-        require: true
+        required: true
     },
     admins: [
         String
     ],
     regionName: {
         type: String,
-        require: true
+        required: true
     },
     regionTag: {
         type: String,
-        require: true
+        required: true
     },
     reagionLogo: {
         type: String,
-        require: true
+        required: true
+    },
+    official: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    lineupChannel: {
+        type: String,
+        required: true,
+        default: ''
     },
     createdAt: {
         type: Number,
-        require: true,
+        required: true,
         default: new Date().getTime()
     }
 })
@@ -40,35 +50,35 @@ export const regionSchema = new Schema({
 export const teamSchema = new Schema({
     teamId: {
         type: String,
-        required: true
+        requiredd: true
     },
     teamName: {
         type: String,
-        required: true
+        requiredd: true
     },
     teamLogo: {
         type: String,
-        required: true
+        requiredd: true
     },
     captainId: {
         type: String,
-        required: true
+        requiredd: true
     },
     coCaptainId: {
         type: String,
-        required: false
+        requiredd: false
     },
     members: [
         String
     ],
     createdAt: {
         type: Number,
-        required: true,
+        requiredd: true,
         default: new Date().getTime()
     },
     transferChannel: {
         type: String,
-        required: false
+        requiredd: false
     }
 })
 
@@ -76,23 +86,48 @@ export const teamSchema = new Schema({
 export const transferOfferSchema = new Schema({
     fromTeam: {
         type: String,
-        required: true
+        requiredd: true
     },
     toPlayer: {
         type: String,
-        required: true
+        requiredd: true
     },
     accepted: {
         type: Boolean,
-        required: true,
+        requiredd: true,
         default: false
     },
     rejected: {
         type: Boolean,
-        required: true,
+        requiredd: true,
         default: false
     },
     dateTime: {
+        type: Number,
+        requiredd: true,
+        default: new Date().getTime()
+    }
+})
+
+
+export const lineupSchema = new Schema({
+    guildId: {
+        type: String,
+        required: true
+    },
+    attackers: [
+        String
+    ],
+    midfielders: [
+        String
+    ],
+    defenders: [
+        String
+    ],
+    goalkeepers: [
+        String
+    ],
+    createdAt: {
         type: Number,
         required: true,
         default: new Date().getTime()

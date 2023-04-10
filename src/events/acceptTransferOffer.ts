@@ -48,7 +48,7 @@ export const AcceptTransferOffer: buttonInteractionType = {
                 $pull: {members: user}
             })
         }
-        await updatePlayerTeam({playerId: user, teamId: transfer.fromTeam})
+        await updatePlayerTeam({playerId: user, teamId: transfer.fromTeam || ''})
         await interaction.reply({
             content: 'Transfer successfully completed.'
         })
