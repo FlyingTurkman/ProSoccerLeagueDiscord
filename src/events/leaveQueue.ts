@@ -77,7 +77,7 @@ export const LeaveQueue: buttonInteractionType = {
                 embeds: [embed],
                 components: [row]
             })
-            await interaction.reply({content: 'Succesfully joined.', ephemeral: true})
+            await interaction.reply({content: 'Succesfully leaved.', ephemeral: true})
         }else {
             await interaction.reply({
                 content: 'Lineup can not created. Lineup can create at text-channels.',

@@ -1,8 +1,12 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, Interaction } from "discord.js";
 import dotenv from 'dotenv'
 import ready from "./listeners/ready";
 import interactionCreate from "./listeners/interactionCreate";
 import mongoose from "mongoose";
+import cron from 'node-cron'
+import lineupDisconnect from "./listeners/lineupDisconnect";
+
+
 dotenv.config()
 
 console.log("Bot is starting...");
@@ -11,6 +15,7 @@ const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildPresences,
         //GatewayIntentBits.MessageContent,
         //GatewayIntentBits.GuildMembers
     ]
@@ -23,6 +28,10 @@ mongoose.connect(process.env.mongoUri || '', {dbName: 'proSoccerLeague'})
 
 ready(client)
 interactionCreate(client)
+
+cron.schedule('5 * * * * *', () => {
+    lineupDisconnect(client)
+})
 
 
 
