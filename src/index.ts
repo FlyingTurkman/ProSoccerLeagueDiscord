@@ -5,6 +5,7 @@ import interactionCreate from "./listeners/interactionCreate";
 import mongoose from "mongoose";
 import cron from 'node-cron'
 import lineupDisconnect from "./listeners/lineupDisconnect";
+import matchMakingListener from "./listeners/matchmakingListener";
 
 
 dotenv.config()
@@ -16,8 +17,8 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildPresences,
-        //GatewayIntentBits.MessageContent,
-        //GatewayIntentBits.GuildMembers
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
     ]
 });
 
@@ -28,6 +29,7 @@ mongoose.connect(process.env.mongoUri || '', {dbName: 'proSoccerLeague'})
 
 ready(client)
 interactionCreate(client)
+matchMakingListener(client)
 
 cron.schedule('*/10 * * * * *', () => {
     lineupDisconnect(client)

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { lineupType } from 'typings'
 
 
 
@@ -108,6 +109,7 @@ export const transferOfferSchema = new Schema({
         default: new Date().getTime()
     }
 })
+
 
 
 export const lineupSchema = new Schema({
