@@ -1,8 +1,10 @@
 import { Client, Interaction } from "discord.js"
+import { ObjectId } from "mongodb"
 
 export {}
 
 export type lineupType = {
+    _id: ObjectId | string,
     guildId: string,
     attackers?: string[],
     midfielders?: string[],
