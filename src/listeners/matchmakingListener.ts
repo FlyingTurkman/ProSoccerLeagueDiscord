@@ -27,6 +27,8 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     let lobbyNumber = Math.floor(Math.random() * 9999)
     let lobbyName = `PSL Lobby ${lobbyNumber.toString()}`
     let lobbyPassword = Math.floor(Math.random() * 9999) + 1000
+    let matchId: string = (Math.floor(Math.random() * 999999) + 100000).toString()
+    let lobbyHoster: string = ''
     let redLw: string = ''
     let redCf: string = ''
     let redRw: string = ''
@@ -63,106 +65,91 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     // random for red team attackers
     attacker = Math.floor(Math.random() * attackerCount)
     redLw = attackers[attacker]
-    sendMessage({client, userId: redLw, userPosition: 'lw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //attackers.filter((a) => a != redLw)
+    lobbyHoster = redLw
+    sendMessage({client, userId: redLw, userPosition: 'lw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     attackers.splice(attacker, 1)
     attackerCount = attackers.length
     attacker = Math.floor(Math.random() * attackerCount)
     redCf = attackers[attacker]
-    sendMessage({client, userId: redCf, userPosition: 'cf', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //attackers.filter((a) => a != redCf)
+    sendMessage({client, userId: redCf, userPosition: 'cf', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     attackers.splice(attacker, 1)
     attackerCount = attackers.length
     attacker = Math.floor(Math.random() * attackerCount)
     redRw = attackers[attacker]
-    sendMessage({client, userId: redRw, userPosition: 'rw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //attackers.filter((a) => a != redRw)
+    sendMessage({client, userId: redRw, userPosition: 'rw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     attackers.splice(attacker, 1)
 
     //random for red team midfielder
     midfielder = Math.floor(Math.random() * midfielderCount)
     redCm = midfielders[midfielder]
-    sendMessage({client, userId: redCm, userPosition: 'cm', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //midfielders.filter((m) => m != redCm)
+    sendMessage({client, userId: redCm, userPosition: 'cm', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     midfielders.splice(midfielder, 1)
 
     //random for red team defenders
     defender = Math.floor(Math.random() * defenderCount)
     redLb = defenders[defender]
-    sendMessage({client, userId: redLb, userPosition: 'lb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //defenders.filter((d) => d != redLb)
+    sendMessage({client, userId: redLb, userPosition: 'lb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     defenders.splice(defender, 1)
     defenderCount = defenders.length
     defender = Math.floor(Math.random() * defenderCount)
     redCb = defenders[defender]
-    sendMessage({client, userId: redCb, userPosition: 'cb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //defenders.filter((d) => d != redCb)
+    sendMessage({client, userId: redCb, userPosition: 'cb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     defenders.splice(defender, 1)
     defenderCount = defenders.length
     defender = Math.floor(Math.random() * defenderCount)
     redRb = defenders[defender]
-    sendMessage({client, userId: redRb, userPosition: 'rb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //defenders.filter((d) => d != redCb)
+    sendMessage({client, userId: redRb, userPosition: 'rb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     defenders.splice(defender, 1)
 
     //random for red team goalkeeper
     goalkeeper = Math.floor(Math.random() * goalkeeperCount)
     redGk = goalkeepers[goalkeeper]
-    sendMessage({client, userId: redGk, userPosition: 'gk', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red'})
-    //goalkeepers.filter((g) => g != redGk)
+    sendMessage({client, userId: redGk, userPosition: 'gk', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
     goalkeepers.splice(goalkeeper, 1)
 
     //random for blue team attackers
     attacker = Math.floor(Math.random() * attackerCount)
     blueLw = attackers[attacker]
-    sendMessage({client, userId: blueLw, userPosition: 'lw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //attackers.filter((a) => a != blueLw)
+    sendMessage({client, userId: blueLw, userPosition: 'lw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     attackers.splice(attacker, 1)
     attackerCount = attackers.length
     attacker = Math.floor(Math.random() * attackerCount)
     blueCf = attackers[attacker]
-    sendMessage({client, userId: blueCf, userPosition: 'cf', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //attackers.filter((a) => a != blueCf)
+    sendMessage({client, userId: blueCf, userPosition: 'cf', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     attackers.splice(attacker, 1)
     attackerCount = attackers.length
     attacker = Math.floor(Math.random() * attackerCount)
     blueRw = attackers[attacker]
-    sendMessage({client, userId: blueRw, userPosition: 'rw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
+    sendMessage({client, userId: blueRw, userPosition: 'rw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     attackers.filter((a) => a != blueRw)
-    //attackers.filter((a) => a != blueCf)
     attackers.splice(attacker, 1)
 
     //random for blue team midfielder
     midfielder = Math.floor(Math.random() * midfielderCount)
     blueCm = midfielders[midfielder]
-    sendMessage({client, userId: blueCm, userPosition: 'cm', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //midfielders.filter((m) => m != blueCm)
+    sendMessage({client, userId: blueCm, userPosition: 'cm', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     midfielders.splice(midfielder, 1)
 
     //random for blue team defenders
     defender = Math.floor(Math.random() * defenderCount)
     blueLb = defenders[defender]
-    sendMessage({client, userId: blueLb, userPosition: 'lb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //defenders.filter((d) => d != blueLb)
+    sendMessage({client, userId: blueLb, userPosition: 'lb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     defenders.splice(defender, 1)
     defenderCount = defenders.length
     defender = Math.floor(Math.random() * defenderCount)
     blueCb = defenders[defender]
-    sendMessage({client, userId: blueCb, userPosition: 'cb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //defenders.filter((d) => d != blueCb)
+    sendMessage({client, userId: blueCb, userPosition: 'cb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     defenders.splice(defender, 1)
     defenderCount = defenders.length
     defender = Math.floor(Math.random() * defenderCount)
     blueRb = defenders[defender]
-    sendMessage({client, userId: blueRb, userPosition: 'rb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //defenders.filter((d) => d != blueCb)
+    sendMessage({client, userId: blueRb, userPosition: 'rb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     defenders.splice(defender, 1)
     
     //random for blue team goalkeeper
     goalkeeper = Math.floor(Math.random() * goalkeeperCount)
     blueGk = goalkeepers[goalkeeper]
-    sendMessage({client, userId: blueGk, userPosition: 'gk', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue'})
-    //goalkeepers.filter((g) => g != blueGk)
+    sendMessage({client, userId: blueGk, userPosition: 'gk', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
     goalkeepers.splice(goalkeeper, 1)
 
 
@@ -179,14 +166,16 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     })
 }
 
-async function sendMessage({client, userId, userPosition, team, lobbyName, lobbyPassword, embedColor}: {client: Client, userId: string, userPosition: string, team: string, lobbyName: string, lobbyPassword: string, embedColor: ColorResolvable}) {
+async function sendMessage({client, userId, userPosition, team, lobbyName, lobbyPassword, embedColor, lobbyHoster, matchId}: {client: Client, userId: string, userPosition: string, team: string, lobbyName: string, lobbyPassword: string, embedColor: ColorResolvable, lobbyHoster: string, matchId: string}) {
     const embed = new EmbedBuilder()
-    embed.setTitle('Match has been found')
+    embed.setTitle('Match found')
     embed.setColor(embedColor)
     embed.setThumbnail(client.users.cache.get(userId)?.avatarURL() || null)
     embed.addFields(
+        {name: 'Match ID', value: matchId},
         {name: 'Your Position', value: userPosition.toUpperCase()},
         {name: 'Your Team', value: team},
+        {name: 'Lobby Hoster', value: `<@${lobbyHoster}>`},
         {name: 'Lobby Name', value: lobbyName},
         {name: 'Lobby Password', value: lobbyPassword},
     )
