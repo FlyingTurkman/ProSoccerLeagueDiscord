@@ -7,7 +7,7 @@ import { TransferPlayer } from "./commands/transfer_player";
 import { TeamSetTransfer } from "./commands/team_set_transfers";
 import { TeamLeave } from "./commands/team_leave";
 import { RegionCreateLineup } from "./commands/region_create_lineup";
-
+import { ClearLineup } from "./commands/clear_lineup";
 
 export const Commands: Command[] = [
     Hello,
@@ -17,5 +17,6 @@ export const Commands: Command[] = [
     TransferPlayer,
     TeamSetTransfer,
     TeamLeave,
-    RegionCreateLineup
+    RegionCreateLineup,
+    ClearLineup
 ]

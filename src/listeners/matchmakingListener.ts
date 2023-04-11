@@ -18,11 +18,11 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     if ( !document.attackers ) return
     if ( !document.midfielders ) return
     if ( !document.defenders ) return
-    /* if ( !document.goalkeepers ) return
+    if ( !document.goalkeepers ) return
     if (document.attackers.length < 6 ) return
     if (document.midfielders.length < 2 ) return
     if (document.defenders.length < 6 ) return
-    if (document.goalkeepers.length < 1 ) return */
+    if (document.goalkeepers.length < 1 ) return
     let lobbyNumber = Math.floor(Math.random() * 9999)
     let lobbyName = `PSL Lobby ${lobbyNumber.toString()}`
     let lobbyPassword = Math.floor(Math.random() * 9999) + 1000
