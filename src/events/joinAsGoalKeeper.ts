@@ -19,6 +19,21 @@ export const JoinAsGoalkeeper: buttonInteractionType = {
             await interaction.reply({content: 'Only official servers can create lineup.', ephemeral: true})
             return
         }
+        const check = await Lineup.findOne({_id: new ObjectId(lineupId)})
+        if (!check) {
+            await interaction.reply({
+                content: 'Lineup not found.',
+                ephemeral: true
+            })
+            return
+        }
+        if (check.goalkeepers.includes(user)) {
+            await interaction.reply({
+                content: 'You are already in lineup as goalkeeper',
+                ephemeral: true
+            })
+            return
+        }
         const lineup = await Lineup.findOneAndUpdate({
             _id: new ObjectId(lineupId)
         }, {

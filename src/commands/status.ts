@@ -1,52 +1,20 @@
 import { Client, CommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { Command } from "../Command";
-import { Lineup, Region } from "../utils/mongodb/Models";
+import { Region, Lineup } from "../utils/mongodb/Models";
 
-
-
-export const RegionCreateLineup: Command = {
-    name: 'region_create_lineup',
-    description: 'You can create lineup for your region',
+export const Status: Command = {
+    name: 'status',
+    description: 'Checking lineup status.',
     run: async (client: Client, interaction: CommandInteraction) => {
-        const guildId = interaction.guild?.id || ''
-        const region = await Region.findOne({guildId})
-        const user = interaction.user.id || ''
+        const channelId = interaction.channel?.id || ''
+        const region = await Region.findOne({lineupChannel: channelId})
+        const guildId = interaction.guildId
         if (!region) {
             await interaction.reply({
-                content: 'Region can not found',
+                content: 'This command is not working here',
                 ephemeral: true
             })
             return
-        }
-        if (!region?.official) {
-            await interaction.reply({
-                content: 'Only official region admin can create lineup',
-                ephemeral: true
-            })
-            return
-        }
-        if (!region.admins.includes(user) || region.ownerId != user) {
-            await interaction.reply({
-                content: 'Only admins can use this command',
-                ephemeral: true
-            })
-            return
-        }
-        const lineupChannel = interaction.channel?.id || ''
-        await Region.findOneAndUpdate({
-            guildId
-        }, {$set: {
-            lineupChannel: lineupChannel
-        }})
-        const tempLineup = await Lineup.findOne({guildId})
-        if (!tempLineup) {
-            await Lineup.create({
-                guildId,
-                attackers: [],
-                midfielders: [],
-                defenders: [],
-                goalkeepers: []
-            })
         }
         const lineup = await Lineup.findOne({guildId})
         if (!lineup) {
@@ -101,7 +69,7 @@ export const RegionCreateLineup: Command = {
                 components: [row]
             })
             await interaction.reply({
-                content: 'Lineup has been created',
+                content: 'Lineup updated',
                 ephemeral: true
             })
         }else {

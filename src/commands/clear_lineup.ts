@@ -2,7 +2,6 @@ import { Client, CommandInteraction } from "discord.js";
 import { Command } from "../Command";
 import { Lineup, Region } from "../utils/mongodb/Models";
 import { RegionCreateLineup } from "./region_create_lineup";
-import { ObjectId } from "mongodb";
 
 export const ClearLineup: Command = {
     name: 'clear_lineup',

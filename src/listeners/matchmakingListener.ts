@@ -2,6 +2,7 @@ import { Lineup } from "../utils/mongodb/Models";
 import { lineupType } from "typings";
 import { Client, ColorResolvable, EmbedBuilder } from "discord.js";
 import { ObjectId } from "mongodb";
+import { Status } from "src/commands/status";
 
 export default async function matchMakingListener(client: Client) {
     const watch = Lineup.watch([], {fullDocument: 'updateLookup', hydrate: true})
@@ -194,5 +195,5 @@ async function removeFromQueue({lineupId, attackers, midfielders, defenders, goa
         }
     })
 
-    //here lineup eklenecek
+    //here lineup update eklenecek
 }

@@ -19,6 +19,21 @@ export const LeaveQueue: buttonInteractionType = {
             await interaction.reply({content: 'Only official servers can create lineup.', ephemeral: true})
             return
         }
+        const check = await Lineup.findOne({_id: new ObjectId(lineupId)})
+        if (!check) {
+            await interaction.reply({
+                content: 'Lineup not found.',
+                ephemeral: true
+            })
+            return
+        }
+        if (!check.attackers.includes(user) && !check.midfielders.includes(user) && !check.defenders.includes(user) && !check.goalkeepers.includes(user)) {
+            await interaction.reply({
+                content: 'You are not in lineup',
+                ephemeral: true
+            })
+            return
+        }
         const lineup = await Lineup.findOneAndUpdate({
             _id: new ObjectId(lineupId)
         }, {
