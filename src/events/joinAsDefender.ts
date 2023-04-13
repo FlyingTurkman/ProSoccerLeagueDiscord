@@ -88,7 +88,7 @@ export const JoinAsDefender: buttonInteractionType = {
                 .setLabel('Leave')
                 .setStyle(ButtonStyle.Danger)
         )
-        const textChannel = client.channels.cache.get(region.lineupChannel || '')
+        const textChannel = client.channels.cache.get(region.soloRankedLineup || '')
         if (textChannel?.isTextBased()) {
             await textChannel.send({
                 embeds: [embed],

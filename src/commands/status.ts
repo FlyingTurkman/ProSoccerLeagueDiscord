@@ -7,7 +7,7 @@ export const Status: Command = {
     description: 'Checking lineup status.',
     run: async (client: Client, interaction: CommandInteraction) => {
         const channelId = interaction.channel?.id || ''
-        const region = await Region.findOne({lineupChannel: channelId})
+        const region = await Region.findOne({soloRankedLineup: channelId})
         const guildId = interaction.guildId
         if (!region) {
             await interaction.reply({
@@ -24,19 +24,48 @@ export const Status: Command = {
             })
             return
         }
-        const totalPlayers = lineup.attackers.length + lineup.midfielders.length + lineup.defenders.length + lineup.goalkeepers.length
-        const embed = new EmbedBuilder()
-        embed.setTitle('Matchmaking')
-        embed.setColor('Red')
-        embed.setDescription(`${region.regionName} matchmaking lineup`)
-        embed.addFields(
-            {name: 'Queue', value: `${totalPlayers} players waiting for queue`},
-            {name: 'Attackers', value: `${lineup.attackers.length}`},
-            {name: 'Midfielders', value: `${lineup.midfielders.length}`},
-            {name: 'Defenders', value: `${lineup.defenders.length}`},
-            {name: 'Goalkeepers', value: `${lineup.goalkeepers.length}`}
+        
+        const totalBronzePlayers = (lineup.ranked?.bronze?.attackers.length || 0) + (lineup.ranked?.bronze?.midfielders.length || 0) + (lineup.ranked?.bronze?.defenders.length || 0) + (lineup.ranked?.bronze?.goalkeepers.length || 0)
+        const totalSilverPlayers = (lineup.ranked?.silver?.attackers.length || 0) + (lineup.ranked?.silver?.midfielders.length || 0) + (lineup.ranked?.silver?.defenders.length || 0) + (lineup.ranked?.silver?.goalkeepers.length || 0)
+        const totalGoldPlayers = (lineup.ranked?.gold?.attackers.length || 0) + (lineup.ranked?.gold?.midfielders.length || 0) + (lineup.ranked?.gold?.defenders.length || 0) + (lineup.ranked?.gold?.goalkeepers.length || 0)
+
+        const embedBronze = new EmbedBuilder()
+        embedBronze.setTitle('Matchmaking')
+        embedBronze.setColor('DarkOrange')
+        embedBronze.setDescription(`${region.regionName} matchmaking lineup`)
+        embedBronze.addFields(
+            {name: 'Bronze queue', value: `${totalBronzePlayers} players waiting for queue`, inline: true},
+            { name: '\u200B', value: '\u200B' },
+            {name: 'Attackers', value: `${lineup.ranked?.bronze?.attackers.length || 0}`, inline: true},
+            {name: 'Midfielders', value: `${lineup.ranked?.bronze?.midfielders.length || 0}`, inline: true},
+            {name: 'Defenders', value: `${lineup.ranked?.bronze?.defenders.length || 0}`, inline: true},
+            {name: 'Goalkeepers', value: `${lineup.ranked?.bronze?.goalkeepers.length || 0}`, inline: true}
         )
-        embed.setFooter(
+        const embedSilver = new EmbedBuilder()
+        embedSilver.setTitle('Matchmaking')
+        embedSilver.setColor('Grey')
+        embedSilver.setDescription(`${region.regionName} matchmaking lineup`)
+        embedSilver.addFields(
+            {name: 'Silver queue', value: `${totalSilverPlayers} players waiting for queue`, inline: true},
+            { name: '\u200B', value: '\u200B' },
+            {name: 'Attackers', value: `${lineup.ranked?.silver?.attackers.length || 0}`, inline: true},
+            {name: 'Midfielders', value: `${lineup.ranked?.silver?.midfielders.length || 0}`, inline: true},
+            {name: 'Defenders', value: `${lineup.ranked?.silver?.defenders.length || 0}`, inline: true},
+            {name: 'Goalkeepers', value: `${lineup.ranked?.silver?.goalkeepers.length || 0}`, inline: true}
+        )
+        const embedGold = new EmbedBuilder()
+        embedGold.setTitle('Matchmaking')
+        embedGold.setColor('Gold')
+        embedGold.setDescription(`${region.regionName} matchmaking lineup`)
+        embedGold.addFields(
+            {name: 'Gold queue', value: `${totalGoldPlayers} players waiting for queue`, inline: true},
+            { name: '\u200B', value: '\u200B' },
+            {name: 'Attackers', value: `${lineup.ranked?.gold?.attackers.length || 0}`, inline: true},
+            {name: 'Midfielders', value: `${lineup.ranked?.gold?.midfielders.length || 0}`, inline: true},
+            {name: 'Defenders', value: `${lineup.ranked?.gold?.defenders.length || 0}`, inline: true},
+            {name: 'Goalkeepers', value: `${lineup.ranked?.gold?.goalkeepers.length || 0}`, inline: true}
+        )
+        embedGold.setFooter(
             {text: `${region.regionName}`, iconURL: client.guilds.cache.get(region.guildId)?.iconURL() || ''}
         )
         const row = new ActionRowBuilder<ButtonBuilder>()
@@ -62,10 +91,10 @@ export const Status: Command = {
                 .setLabel('Leave')
                 .setStyle(ButtonStyle.Danger)
         )
-        const textChannel = client.channels.cache.get(region.lineupChannel || '')
+        const textChannel = client.channels.cache.get(region.soloRankedLineup || '')
         if (textChannel?.isTextBased()) {
             textChannel.send({
-                embeds: [embed],
+                embeds: [embedBronze, embedSilver, embedGold],
                 components: [row]
             })
             await interaction.reply({

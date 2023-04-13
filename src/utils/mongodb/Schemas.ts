@@ -1,9 +1,49 @@
 import mongoose from 'mongoose'
-import { lineupType } from 'typings'
+import { BASE_ELO } from '../src/constants'
 
 
 
 const { Schema } = mongoose
+
+
+export const userSchema = new Schema({
+    userId: {
+        type: String,
+        required: true
+    },
+    steamId: {
+        type: String,
+        required: false
+    },
+    soloRankedElo: {
+        type: Number,
+        required: true,
+        default: BASE_ELO
+    },
+    flexRankedElo: {
+        type: Number,
+        required: true,
+        default: BASE_ELO
+    },
+    stats: {
+        soloRanked: {
+            win: {type: Number, required: true, default: 0},
+            draw: {type: Number, required: true, default: 0},
+            lose: {type: Number, required: true, default: 0},
+        },
+        flexRanked: {
+            win: {type: Number, required: true, default: 0},
+            draw: {type: Number, required: true, default: 0},
+            lose: {type: Number, required: true, default: 0},
+        },
+        casual: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    }
+})
+
 
 
 export const regionSchema = new Schema({
@@ -35,10 +75,17 @@ export const regionSchema = new Schema({
         required: true,
         default: false
     },
-    lineupChannel: {
+    soloRankedLineup: {
         type: String,
-        required: true,
-        default: ''
+        required: false
+    },
+    flexRankedLineup: {
+        type: String,
+        required: false
+    },
+    casualLineup : {
+        type: String,
+        required: false
     },
     createdAt: {
         type: Number,
@@ -116,6 +163,30 @@ export const lineupSchema = new Schema({
     guildId: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    ranked: {
+        bronze: {
+            attackers: [String],
+            midfielders: [String],
+            defenders: [String],
+            goalkeepers: [String],
+        },
+        silver: {
+            attackers: [String],
+            midfielders: [String],
+            defenders: [String],
+            goalkeepers: [String],
+        },
+        gold: {
+            attackers: [String],
+            midfielders: [String],
+            defenders: [String],
+            goalkeepers: [String],
+        }
     },
     attackers: [
         String

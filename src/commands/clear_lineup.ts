@@ -1,7 +1,7 @@
 import { Client, CommandInteraction } from "discord.js";
 import { Command } from "../Command";
 import { Lineup, Region } from "../utils/mongodb/Models";
-import { RegionCreateLineup } from "./region_create_lineup";
+import { Status } from "./status";
 
 export const ClearLineup: Command = {
     name: 'clear_lineup',
@@ -19,7 +19,7 @@ export const ClearLineup: Command = {
             return
         }
         const channel = interaction.channel?.id || ''
-        if (isAdmin.lineupChannel != channel) {
+        if (isAdmin.soloRankedLineup != channel) {
             await interaction.reply({
                 content: 'This channel is not lineup text channel.',
                 ephemeral: true
@@ -34,6 +34,6 @@ export const ClearLineup: Command = {
                 goalkeepers: []
             }
         })
-        RegionCreateLineup.run(client, interaction)
+        Status.run(client, interaction)
     }
 }

@@ -127,7 +127,7 @@ async function refreshLineup({client, lineup, userId}: {client: Client, lineup: 
             .setLabel('Leave')
             .setStyle(ButtonStyle.Danger)
     )
-    const textChannel = client.channels.cache.get(region.lineupChannel || '')
+    const textChannel = client.channels.cache.get(region.soloRankedLineup || '')
     if (textChannel?.isTextBased()) {
         await textChannel.send({
             //content: `${user?.username} ( <@${userId}> ) went offline`,
