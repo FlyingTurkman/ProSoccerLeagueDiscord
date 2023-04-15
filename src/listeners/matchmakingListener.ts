@@ -17,14 +17,20 @@ export default async function matchMakingListener(client: Client) {
 
 
 async function isPlayable({document, client}: {document: lineupType, client: Client}) {
-    if ( !document.attackers ) return
-    if ( !document.midfielders ) return
-    if ( !document.defenders ) return
-    if ( !document.goalkeepers ) return
-    if (document.attackers.length < 6 ) return
-    if (document.midfielders.length < 2 ) return
-    if (document.defenders.length < 6 ) return
-    if (document.goalkeepers.length < 1 ) return
+    if (document.type == 'solo') {
+        await soloBronzeCheck({document, client})
+    }
+}
+
+async function soloBronzeCheck({document, client}: {document: lineupType, client: Client}) {
+    if ( !document.ranked?.bronze.attackers ) return
+    if ( !document.ranked?.bronze.midfielders ) return
+    if ( !document.ranked?.bronze.defenders ) return
+    if ( !document.ranked?.bronze.goalkeepers ) return
+    if (document.ranked.bronze.attackers.length < 6 ) return
+    if (document.ranked.bronze.midfielders.length < 2 ) return
+    if (document.ranked.bronze.defenders.length < 6 ) return
+    if (document.ranked.bronze.goalkeepers.length < 2 ) return
     let lobbyNumber = Math.floor(Math.random() * 9999)
     let lobbyName = `PSL Lobby ${lobbyNumber.toString()}`
     let lobbyPassword = Math.floor(Math.random() * 9999) + 1000
@@ -47,20 +53,20 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     let blueRb: string = ''
     let blueGk: string = ''
 
-    let attackers = document.attackers
-    let attackerCount = document.attackers.length
+    let attackers = document.ranked.bronze.attackers
+    let attackerCount = attackers.length
     let attacker = Math.floor(Math.random() * attackerCount)
 
-    let midfielders = document.midfielders
-    let midfielderCount = document.midfielders.length
+    let midfielders = document.ranked.bronze.midfielders
+    let midfielderCount = midfielders.length
     let midfielder = Math.floor(Math.random() * midfielderCount)
 
-    let defenders = document.defenders
-    let defenderCount = document.defenders.length
+    let defenders = document.ranked.bronze.defenders
+    let defenderCount = defenders.length
     let defender = Math.floor(Math.random() * defenderCount)
 
-    let goalkeepers = document.goalkeepers
-    let goalkeeperCount = document.goalkeepers.length
+    let goalkeepers = document.ranked.bronze.goalkeepers
+    let goalkeeperCount = goalkeepers.length
     let goalkeeper = Math.floor(Math.random() * goalkeeperCount)
 
     // random for red team attackers
@@ -167,6 +173,7 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     })
 }
 
+
 async function sendMessage({client, userId, userPosition, team, lobbyName, lobbyPassword, embedColor, lobbyHoster, matchId}: {client: Client, userId: string, userPosition: string, team: string, lobbyName: string, lobbyPassword: string, embedColor: ColorResolvable, lobbyHoster: string, matchId: string}) {
     const embed = new EmbedBuilder()
     embed.setTitle('Match found')
@@ -180,6 +187,7 @@ async function sendMessage({client, userId, userPosition, team, lobbyName, lobby
         {name: 'Lobby Name', value: lobbyName},
         {name: 'Lobby Password', value: lobbyPassword},
     )
+    embed.setFooter({text: 'Solo ranked match'})
     client.users.cache.get(userId)?.send({
         embeds: [embed]
     })
@@ -191,7 +199,19 @@ async function removeFromQueue({lineupId, attackers, midfielders, defenders, goa
             attackers: {$in: attackers},
             midfielders: {$in: midfielders},
             defenders: {$in: defenders},
-            goalkeepers: {$in: goalkeepers}
+            goalkeepers: {$in: goalkeepers},
+            'ranked.bronze.attackers' : {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.bronze.midfielders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.bronze.defenders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.bronze.goalkeepers': {in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.silver.attackers' : {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.silver.midfielders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.silver.defenders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.silver.goalkeepers': {in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.gold.attackers' : {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.gold.midfielders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.gold.defenders': {$in: [attackers, midfielders, defenders, goalkeepers]},
+            'ranked.gold.goalkeepers': {in: [attackers, midfielders, defenders, goalkeepers]},
         }
     })
 

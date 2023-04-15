@@ -6,6 +6,27 @@ export {}
 export type lineupType = {
     _id: ObjectId | string,
     guildId: string,
+    type: string,
+    ranked?: {
+        bronze: {
+            attackers: string[],
+            midfielders: string[],
+            defenders: string[],
+            goalkeepers: string[]
+        },
+        silver: {
+            attackers: string[],
+            midfielders: string[],
+            defenders: string[],
+            goalkeepers: string[]
+        },
+        gold: {
+            attackers: string[],
+            midfielders: string[],
+            defenders: string[],
+            goalkeepers: string[]
+        },
+    }
     attackers?: string[],
     midfielders?: string[],
     defenders?: string[],

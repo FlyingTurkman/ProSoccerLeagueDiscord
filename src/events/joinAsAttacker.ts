@@ -280,6 +280,10 @@ export const JoinAsAttacker: buttonInteractionType = {
                 })
             }
             return
+        }else if (check.type == 'flex') {
+
+        }else if (check.type == 'casual') {
+            
         }
     }
 }
