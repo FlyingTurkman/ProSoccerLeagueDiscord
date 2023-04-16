@@ -20,6 +20,7 @@ async function isPlayable({document, client}: {document: lineupType, client: Cli
     if (document.type == 'solo') {
         await soloBronzeCheck({document, client})
         await soloSilverCheck({document, client})
+        await soloGoldCheck({document, client})
     }
 }
 
@@ -218,6 +219,158 @@ async function soloSilverCheck({document, client}: {document: lineupType, client
     let defender = Math.floor(Math.random() * defenderCount)
 
     let goalkeepers = document.ranked.silver.goalkeepers
+    let goalkeeperCount = goalkeepers.length
+    let goalkeeper = Math.floor(Math.random() * goalkeeperCount)
+
+    // random for red team attackers
+    attacker = Math.floor(Math.random() * attackerCount)
+    redLw = attackers[attacker]
+    lobbyHoster = redLw
+    sendMessage({client, userId: redLw, userPosition: 'lw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    attackers.splice(attacker, 1)
+    attackerCount = attackers.length
+    attacker = Math.floor(Math.random() * attackerCount)
+    redCf = attackers[attacker]
+    sendMessage({client, userId: redCf, userPosition: 'cf', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    attackers.splice(attacker, 1)
+    attackerCount = attackers.length
+    attacker = Math.floor(Math.random() * attackerCount)
+    redRw = attackers[attacker]
+    sendMessage({client, userId: redRw, userPosition: 'rw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    attackers.splice(attacker, 1)
+
+    //random for red team midfielder
+    midfielder = Math.floor(Math.random() * midfielderCount)
+    redCm = midfielders[midfielder]
+    sendMessage({client, userId: redCm, userPosition: 'cm', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    midfielders.splice(midfielder, 1)
+
+    //random for red team defenders
+    defender = Math.floor(Math.random() * defenderCount)
+    redLb = defenders[defender]
+    sendMessage({client, userId: redLb, userPosition: 'lb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+    defenderCount = defenders.length
+    defender = Math.floor(Math.random() * defenderCount)
+    redCb = defenders[defender]
+    sendMessage({client, userId: redCb, userPosition: 'cb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+    defenderCount = defenders.length
+    defender = Math.floor(Math.random() * defenderCount)
+    redRb = defenders[defender]
+    sendMessage({client, userId: redRb, userPosition: 'rb', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+
+    //random for red team goalkeeper
+    goalkeeper = Math.floor(Math.random() * goalkeeperCount)
+    redGk = goalkeepers[goalkeeper]
+    sendMessage({client, userId: redGk, userPosition: 'gk', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId})
+    goalkeepers.splice(goalkeeper, 1)
+
+    //random for blue team attackers
+    attacker = Math.floor(Math.random() * attackerCount)
+    blueLw = attackers[attacker]
+    sendMessage({client, userId: blueLw, userPosition: 'lw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    attackers.splice(attacker, 1)
+    attackerCount = attackers.length
+    attacker = Math.floor(Math.random() * attackerCount)
+    blueCf = attackers[attacker]
+    sendMessage({client, userId: blueCf, userPosition: 'cf', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    attackers.splice(attacker, 1)
+    attackerCount = attackers.length
+    attacker = Math.floor(Math.random() * attackerCount)
+    blueRw = attackers[attacker]
+    sendMessage({client, userId: blueRw, userPosition: 'rw', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    attackers.filter((a) => a != blueRw)
+    attackers.splice(attacker, 1)
+
+    //random for blue team midfielder
+    midfielder = Math.floor(Math.random() * midfielderCount)
+    blueCm = midfielders[midfielder]
+    sendMessage({client, userId: blueCm, userPosition: 'cm', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    midfielders.splice(midfielder, 1)
+
+    //random for blue team defenders
+    defender = Math.floor(Math.random() * defenderCount)
+    blueLb = defenders[defender]
+    sendMessage({client, userId: blueLb, userPosition: 'lb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+    defenderCount = defenders.length
+    defender = Math.floor(Math.random() * defenderCount)
+    blueCb = defenders[defender]
+    sendMessage({client, userId: blueCb, userPosition: 'cb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+    defenderCount = defenders.length
+    defender = Math.floor(Math.random() * defenderCount)
+    blueRb = defenders[defender]
+    sendMessage({client, userId: blueRb, userPosition: 'rb', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    defenders.splice(defender, 1)
+    
+    //random for blue team goalkeeper
+    goalkeeper = Math.floor(Math.random() * goalkeeperCount)
+    blueGk = goalkeepers[goalkeeper]
+    sendMessage({client, userId: blueGk, userPosition: 'gk', team: 'Blue Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Blue', lobbyHoster, matchId})
+    goalkeepers.splice(goalkeeper, 1)
+
+
+    let currentAttackers = [redLw, redCf, redRw, blueLw, blueCf, blueRw]
+    let currentMidfielders = [redCm, blueCm]
+    let currentDefenders = [redLb, redCb, redRb, blueLb, blueCb, blueRb]
+    let currentGoalkeepers = [redGk, blueGk]
+    await removeFromQueue({
+        attackers: currentAttackers,
+        midfielders: currentMidfielders,
+        defenders: currentDefenders,
+        goalkeepers: currentGoalkeepers,
+        lineupId: document._id.toString()
+    })
+}
+
+
+async function soloGoldCheck({document, client}: {document: lineupType, client: Client}) {
+    if ( !document.ranked?.gold.attackers ) return
+    if ( !document.ranked?.gold.midfielders ) return
+    if ( !document.ranked?.gold.defenders ) return
+    if ( !document.ranked?.gold.goalkeepers ) return
+    if (document.ranked.gold.attackers.length < 6 ) return
+    if (document.ranked.gold.midfielders.length < 2 ) return
+    if (document.ranked.gold.defenders.length < 6 ) return
+    if (document.ranked.gold.goalkeepers.length < 2 ) return
+    let lobbyNumber = Math.floor(Math.random() * 9999)
+    let lobbyName = `PSL Lobby ${lobbyNumber.toString()}`
+    let lobbyPassword = Math.floor(Math.random() * 9999) + 1000
+    let matchId: string = (Math.floor(Math.random() * 999999) + 100000).toString()
+    let lobbyHoster: string = ''
+    let redLw: string = ''
+    let redCf: string = ''
+    let redRw: string = ''
+    let redCm: string = ''
+    let redLb: string = ''
+    let redCb: string = ''
+    let redRb: string = ''
+    let redGk: string = ''
+    let blueLw: string = ''
+    let blueCf: string = ''
+    let blueRw: string = ''
+    let blueCm: string = ''
+    let blueLb: string = ''
+    let blueCb: string = ''
+    let blueRb: string = ''
+    let blueGk: string = ''
+
+    let attackers = document.ranked.gold.attackers
+    let attackerCount = attackers.length
+    let attacker = Math.floor(Math.random() * attackerCount)
+
+    let midfielders = document.ranked.gold.midfielders
+    let midfielderCount = midfielders.length
+    let midfielder = Math.floor(Math.random() * midfielderCount)
+
+    let defenders = document.ranked.gold.defenders
+    let defenderCount = defenders.length
+    let defender = Math.floor(Math.random() * defenderCount)
+
+    let goalkeepers = document.ranked.gold.goalkeepers
     let goalkeeperCount = goalkeepers.length
     let goalkeeper = Math.floor(Math.random() * goalkeeperCount)
 
