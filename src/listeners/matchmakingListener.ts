@@ -319,8 +319,7 @@ async function soloSilverCheck({document, client}: {document: lineupType, client
     const redTeam = [redLw, redCf, redRw, redCm, redLb, redCb, redRb, redGk]
     const blueTeam = [blueLw, blueCf, blueRw, blueCm, blueLb, blueCb, blueRb, blueGk]
 
-    //const redCaptain = redTeam[Math.floor(Math.random() * 7)]
-    const redCaptain = redLw
+    const redCaptain = redTeam[Math.floor(Math.random() * 7)]
     const blueCaptain = blueTeam[Math.floor(Math.random() * 7)]
 
     sendMessage({client, userId: redLw, userPosition: 'lw', team: 'Red Team', lobbyName, lobbyPassword: lobbyPassword.toString(), embedColor: 'Red', lobbyHoster, matchId, teamCaptain: redCaptain})
