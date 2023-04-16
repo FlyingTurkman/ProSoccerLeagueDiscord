@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { lineupSchema, regionSchema, teamSchema, transferOfferSchema, userSchema } from "./Schemas";
+import { lineupSchema, regionSchema, teamSchema, transferOfferSchema, userSchema, matchSchema } from "./Schemas";
 
 
 export const Region = mongoose.model('Region', regionSchema)
@@ -11,3 +11,5 @@ export const TransferOffer = mongoose.model('Transfer_Offer', transferOfferSchem
 export const Lineup = mongoose.model('lineup', lineupSchema)
 
 export const User = mongoose.model('user', userSchema)
+
+export const Match = mongoose.model('match', matchSchema)

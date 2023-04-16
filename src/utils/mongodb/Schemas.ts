@@ -206,3 +206,108 @@ export const lineupSchema = new Schema({
         default: new Date().getTime()
     }
 })
+
+
+export const matchSchema = new Schema({
+    matchId: {
+        type: String,
+        required: true
+    },
+    matchType: {
+        type: String,
+        required: true
+    },
+    redTeam: {
+        lw: {
+            type: String,
+            required: true
+        },
+        cf: {
+            type: String,
+            required: true
+        },
+        rw: {
+            type: String,
+            required: true
+        },
+        cm: {
+            type: String,
+            required: true
+        },
+        lb: {
+            type: String,
+            required: true
+        },
+        cb: {
+            type: String,
+            required: true
+        },
+        rb: {
+            type: String,
+            required: true
+        },
+        gk: {
+            type: String,
+            required: true
+        }
+    },
+    blueTeam: {
+        lw: {
+            type: String,
+            required: true
+        },
+        cf: {
+            type: String,
+            required: true
+        },
+        rw: {
+            type: String,
+            required: true
+        },
+        cm: {
+            type: String,
+            required: true
+        },
+        lb: {
+            type: String,
+            required: true
+        },
+        cb: {
+            type: String,
+            required: true
+        },
+        rb: {
+            type: String,
+            required: true
+        },
+        gk: {
+            type: String,
+            required: true
+        }
+    },
+    redTeamCaptain: {
+        type: String,
+        required: true
+    },
+    blueTeamCaptain: {
+        type: String,
+        required: true
+    },
+    lobbyHoster: {
+        type: String,
+        required: true
+    },
+    lobbyName: {
+        type: String,
+        required: true
+    },
+    lobbyPassword: {
+        type: String,
+        required: true
+    },
+    dateTime: {
+        type: Number,
+        required: true,
+        default: new Date().getTime()
+    }
+})
