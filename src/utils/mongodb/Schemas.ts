@@ -305,6 +305,24 @@ export const matchSchema = new Schema({
         type: String,
         required: true
     },
+    result: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    redVote: {
+        type: Number,
+        required: false
+    },
+    blueVote: {
+        type: Number,
+        required: false
+    },
+    ended: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     dateTime: {
         type: Number,
         required: true,

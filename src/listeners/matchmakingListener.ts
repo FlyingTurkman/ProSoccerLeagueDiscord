@@ -187,10 +187,10 @@ async function soloSilverCheck({document, client}: {document: lineupType, client
     if ( !document.ranked?.silver.midfielders ) return
     if ( !document.ranked?.silver.defenders ) return
     if ( !document.ranked?.silver.goalkeepers ) return
-    if (document.ranked.silver.attackers.length < 6 ) return
+/*     if (document.ranked.silver.attackers.length < 6 ) return
     if (document.ranked.silver.midfielders.length < 2 ) return
     if (document.ranked.silver.defenders.length < 6 ) return
-    if (document.ranked.silver.goalkeepers.length < 2 ) return
+    if (document.ranked.silver.goalkeepers.length < 2 ) return */
     let lobbyNumber = Math.floor(Math.random() * 9999)
     let lobbyName = `PSL Lobby ${lobbyNumber.toString()}`
     let lobbyPassword = Math.floor(Math.random() * 9999) + 1000
