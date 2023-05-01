@@ -2,7 +2,6 @@ import { Client, Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, But
 import { CustomLineup, Lineup, Region, Team, User } from "../utils/mongodb/Models";
 import { buttonInteractionType } from "typings";
 import { ObjectId } from "mongodb";
-import { BRONZE, ELO_GAP, SILVER } from "../utils/src/constants";
 
 
 const customId = 'custom_leave_'
@@ -41,30 +40,25 @@ export const CustomLeave: buttonInteractionType = {
             return
         }
         const embed = new EmbedBuilder()
+        let players: string = '\n'
+        newLineup.players.forEach((player: string, i: number) => {
+            players = `${players}\n**${i+1}:** ${client.users.cache.get(player)?.username || 'undefined'}`
+        })
         embed.setTitle(`${team.teamName} Custom Lineup`)
         embed.setThumbnail(guild.bannerURL())
         embed.addFields({
-            name: '#', value: 'Player'
+            name: 'Players', value: players
         })
         embed.addFields(
             { name: '\u200B', value: '\u200B' },
         )
-        newLineup.players.forEach((player: string, i: number) => {
-            embed.addFields({
-                name: `${i+1}:`, value: `${client.users.cache.get(player)?.username || 'undefined'}`
-            })
-        })
-        embed.addFields(
-            { name: '#', value: 'Goalkeepers' }
-        )
-        embed.addFields(
-            { name: '\u200B', value: '\u200B' }
-        )
+        let goalkeepers: string = '\n'
         newLineup.gk.forEach((player: string, i: number) => {
-            embed.addFields({
-                name: `${i+1}:`, value: `${client.users.cache.get(player)?.username || 'undefined'}`
-            })
+            goalkeepers = `${goalkeepers}\n**${i+1}:** ${client.users.cache.get(player)?.username || 'undefined'}`
         })
+        embed.addFields(
+            { name: 'Goalkeepers', value: goalkeepers }
+        )
         const row = new ActionRowBuilder<ButtonBuilder>()
         row.addComponents(
             new ButtonBuilder()
@@ -85,7 +79,7 @@ export const CustomLeave: buttonInteractionType = {
             components: [row]
         })
         interaction.reply({
-            content: 'Succesfully joined lineup',
+            content: 'Succesfully left from lineup',
             ephemeral: true
         })
     }

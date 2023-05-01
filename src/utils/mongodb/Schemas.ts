@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import { BASE_ELO } from '../src/constants'
+import { ObjectId } from 'mongodb'
 
 
 
@@ -169,8 +170,20 @@ export const customLineupSchema = new Schema({
         required: true
     },
     players: [String],
-    gk: [String]
+    gk: [String],
+    pickStarted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    timeOut: {
+        type: Number,
+        required: true,
+        default: 120
+    }
 })
+
+
 
 
 

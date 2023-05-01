@@ -1,5 +1,7 @@
 import { Client, Interaction } from "discord.js"
 import { ObjectId } from "mongodb"
+import { InferSchemaType } from "mongoose"
+import { customLineupSchema } from "src/utils/mongodb/Schemas"
 
 export {}
 
@@ -39,6 +41,9 @@ export type buttonInteractionType = {
     customId: string,
     run: (client: Client, interaction: Interaction) => void
 }
+
+
+export type customLineupType = InferSchemaType<typeof customLineupSchema>
 
 
 declare global {

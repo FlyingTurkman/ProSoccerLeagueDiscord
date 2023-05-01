@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import cron from 'node-cron'
 import lineupDisconnect from "./listeners/lineupDisconnect";
 import matchMakingListener from "./listeners/matchmakingListener";
+import customListener from "./listeners/customListener";
 
 
 dotenv.config()
@@ -30,6 +31,7 @@ mongoose.connect(process.env.mongoUri || '', {dbName: 'proSoccerLeague'})
 ready(client)
 interactionCreate(client)
 matchMakingListener(client)
+customListener(client)
 
 cron.schedule('*/10 * * * * *', () => {
     lineupDisconnect(client)
