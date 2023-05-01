@@ -10,6 +10,7 @@ import { RegionCreateLineup } from "./commands/region_create_lineup";
 import { ClearLineup } from "./commands/clear_lineup";
 import { Status } from "./commands/status";
 import { LookingForPlayer } from "./commands/looking_for_player";
+import { TeamCustomCreateLineup } from "./commands/team_custom_create_lineup";
 
 
 
@@ -24,5 +25,6 @@ export const Commands: Command[] = [
     RegionCreateLineup,
     ClearLineup,
     Status,
-    LookingForPlayer
+    LookingForPlayer,
+    TeamCustomCreateLineup
 ]

@@ -1,12 +1,16 @@
 import { CommandInteraction, Client, Interaction } from "discord.js";
 import { Commands } from "../Commands";
 import { Events } from "../events/Events";
+import { ButtonInteraction } from "discord.js";
 
 
 export default (client: Client): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
         if (interaction.isButton()) {
-            await handleButtonCommand(interaction.customId, client, interaction)
+            if (interaction.channel && interaction.channel.isTextBased()) {
+                await handleButtonCommand(interaction.customId, client, interaction)
+            }
+            
         }
         if (interaction.isCommand()) {
             await handleSlashCommand(client, interaction);
@@ -24,7 +28,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
 };
 
 
-const handleButtonCommand = async (customId: string, client: Client, interaction: Interaction): Promise<void> => {
+const handleButtonCommand = async (customId: string, client: Client, interaction: ButtonInteraction): Promise<void> => {
     const event = Events.find((e) => customId.startsWith(e.customId))
     if (!event) {
         if (interaction.isRepliable()){

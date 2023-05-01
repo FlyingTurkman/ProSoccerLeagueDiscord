@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { Client, CommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from "discord.js";
 import { Command } from "../Command";
 import { Region, Lineup } from "../utils/mongodb/Models";
 
@@ -92,7 +92,7 @@ export const Status: Command = {
                 .setStyle(ButtonStyle.Danger)
         )
         const textChannel = client.channels.cache.get(region.soloRankedLineup || '')
-        if (textChannel?.isTextBased()) {
+        if (textChannel && textChannel.type == ChannelType.GuildText) {
             textChannel.send({
                 embeds: [embedBronze, embedSilver, embedGold],
                 components: [row]

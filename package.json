@@ -9,7 +9,7 @@
   "author": "Sharkman",
   "license": "GPL-3.0",
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
     "elo-rank": "^1.0.4",
     "mongodb": "^4.13.0",

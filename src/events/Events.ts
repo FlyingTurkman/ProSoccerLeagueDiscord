@@ -7,6 +7,9 @@ import { JoinAsDefender } from './joinAsDefender'
 import { JoinAsGoalkeeper } from './joinAsGoalKeeper'
 import { LeaveQueue } from './leaveQueue'
 import { RedTeamWin } from './redTeamWin'
+import { CustomJoinLineup } from './customJoinLineup'
+import { CustomJoinAsGk } from './customJoinAsGk'
+import { CustomLeave } from './customLeave'
 
 
 export const Events: buttonInteractionType[] = [
@@ -17,5 +20,8 @@ export const Events: buttonInteractionType[] = [
     JoinAsDefender,
     JoinAsGoalkeeper,
     LeaveQueue,
-    RedTeamWin
+    RedTeamWin,
+    CustomJoinLineup,
+    CustomJoinAsGk,
+    CustomLeave
 ]

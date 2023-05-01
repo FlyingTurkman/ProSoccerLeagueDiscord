@@ -127,6 +127,10 @@ export const teamSchema = new Schema({
     transferChannel: {
         type: String,
         requiredd: false
+    },
+    customChannel: {
+        type: String,
+        required: false
     }
 })
 
@@ -155,6 +159,17 @@ export const transferOfferSchema = new Schema({
         requiredd: true,
         default: new Date().getTime()
     }
+})
+
+
+
+export const customLineupSchema = new Schema({
+    guildId: {
+        type: String,
+        required: true
+    },
+    players: [String],
+    gk: [String]
 })
 
 
