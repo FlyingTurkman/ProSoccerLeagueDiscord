@@ -180,6 +180,20 @@ export const customLineupSchema = new Schema({
         type: Number,
         required: true,
         default: 120
+    },
+    deadLine: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    countDownStarted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    captainRole: {
+        type: String,
+        required: false
     }
 })
 

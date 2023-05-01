@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from "discord.js";
 import { Command } from "../Command";
 import { CustomLineup, Lineup, Region, Team } from "../utils/mongodb/Models";
-import { STRING } from "../utils/src/options";
+import { NUMBER, ROLE, STRING } from "../utils/src/options";
 
 
 
@@ -9,9 +9,15 @@ import { STRING } from "../utils/src/options";
 export const TeamCustomCreateLineup: Command = {
     name: 'team_custom_create_lineup',
     description: 'You can create custom lineup for your team',
+    options: [
+        {type: ROLE, name: 'captain_role', description: 'Custom Captains', required: false},
+        {type: NUMBER, name: 'countdown', description: 'Countdown Seconds', required: false, min_length: 2, max_length: 3}
+    ],
     run: async(client: Client, interaction: CommandInteraction) => {
         const guildId = interaction.guildId
         const guild = client.guilds.cache.get(guildId || '')
+        const captainRole = interaction.options.get('captain_role')?.value
+        const countdown = interaction.options.get('countdown')?.value
         if (!guild){
             return
         }
@@ -41,6 +47,12 @@ export const TeamCustomCreateLineup: Command = {
         if (!newLineup) {
             return
         }
+        if (captainRole) {
+            await CustomLineup.findOneAndUpdate({guildId}, {$set: {captainRole}})
+        }
+        if (countdown) {
+            await CustomLineup.findOneAndUpdate({guildId}, {$set: {timeOut: countdown}})
+        }
         await interaction.reply({
             content: 'Custom lineup succesfully created',
             ephemeral: true
@@ -64,7 +76,7 @@ export const TeamCustomCreateLineup: Command = {
         )
         let goalkeepers: string = '\n'
         newLineup.gk.forEach((player: string, i: number) => {
-            goalkeepers = `${players}\n**${i+1}:** ${client.users.cache.get(player)?.username || 'undefined'}`
+            goalkeepers = `${goalkeepers}\n**${i+1}:** ${client.users.cache.get(player)?.username || 'undefined'}`
         })
         embed.addFields(
             { name: 'Goalkeepers', value: goalkeepers }
