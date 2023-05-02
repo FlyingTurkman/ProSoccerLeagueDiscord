@@ -26,7 +26,7 @@ export const TeamCustomCreateLineup: Command = {
             teamId: guildId
         }, {
             $set: {
-                customChannel: channelId
+                customChannel: channelId,
             }
         })
         if (!team) {

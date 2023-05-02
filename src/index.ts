@@ -7,6 +7,7 @@ import cron from 'node-cron'
 import lineupDisconnect from "./listeners/lineupDisconnect";
 import matchMakingListener from "./listeners/matchmakingListener";
 import customListener from "./listeners/customListener";
+import { CustomLineup } from "./utils/mongodb/Models";
 
 
 dotenv.config()
@@ -27,6 +28,9 @@ mongoose.connect(process.env.mongoUri || '', {dbName: 'proSoccerLeague'})
 .then(() => {
     console.log('Bağlantı başarıyla kuruldu')
 })
+
+
+
 
 ready(client)
 interactionCreate(client)

@@ -10,6 +10,7 @@ import { RedTeamWin } from './redTeamWin'
 import { CustomJoinLineup } from './customJoinLineup'
 import { CustomJoinAsGk } from './customJoinAsGk'
 import { CustomLeave } from './customLeave'
+import { PickPlayer } from './pickPlayer'
 
 
 export const Events: buttonInteractionType[] = [
@@ -23,5 +24,6 @@ export const Events: buttonInteractionType[] = [
     RedTeamWin,
     CustomJoinLineup,
     CustomJoinAsGk,
-    CustomLeave
+    CustomLeave,
+    PickPlayer
 ]

@@ -20,7 +20,7 @@ export default async function customListener(client: Client) {
 async function isPlayable({document, client}: {document: customLineupType, client: Client}) {
     const goalkeepers: string[] = document.gk
     const players: string[] = document.players
-    if (goalkeepers.length < 1 || players.length < 2) {
+    if (goalkeepers.length == 0 || players.length < 2) {
         await CustomLineup.updateMany({guildId: document.guildId}, {$set: {countDownStarted: false, pickStarted: false}})
         return
     }
@@ -45,7 +45,21 @@ async function isPlayable({document, client}: {document: customLineupType, clien
         channel.send({
             embeds: [embed]
         })
-        countDownTick({seconds: 5, guildId: document.guildId, client, captainRole: document.captainRole || ''})
+        countDownTick({seconds: document.timeOut, guildId: document.guildId, client, captainRole: document.captainRole || ''})
+    } else {
+        const date =  new Date().getTime()
+        if (date > checkTime.deadLine) {
+            const date = new Date()
+            date.setSeconds(date.getSeconds() + checkTime.timeOut)
+            await CustomLineup.updateMany({guildId: document.guildId}, {$set: {countDownStarted: true, deadLine: date.getTime() || 0}})
+            const embed = new EmbedBuilder()
+            embed.setFooter({text: `Countdown has begun. Picks will begin at ${date.toUTCString()}. You can join until this time.`})
+            embed.setColor('DarkRed')
+            channel.send({
+                embeds: [embed]
+            })
+            countDownTick({seconds: document.timeOut, guildId: document.guildId, client, captainRole: document.captainRole || ''})
+        }
     }
 }
 
@@ -64,9 +78,10 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         const bluePlayers: string[] = []
         let redCaptain: string = ''
         let blueCaptain: string = ''
+        let redGk: string = ''
+        let blueGk: string = ''
         let players: string[] = lineup.players
         let gks: string[] = lineup.gk
-        
         /* players.forEach((player) => {
             const roleTest = client.guilds.cache.get(guildId)?.roles.cache.get(captainRole)?.members.get(player)
             if (roleTest) {
@@ -81,7 +96,6 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         }) */
 
         let playersHasCRole: string[] = [];
-
         function getRandomInt(max: number) {
             return Math.floor(Math.random() * max);
           }
@@ -101,22 +115,34 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         blueCaptain = playersHasCRole[rand];
         bluePlayers.push(blueCaptain)
 
-        if (redCaptain == '') {
-
+        /* if (redCaptain == '') {
+            //here unutma
         }
 
         if (blueCaptain == '') {
+            //here unutma
+        } */
 
+        if (gks.length == 1) {
+            redGk = gks[0]
+            blueGk = gks[0]
+            gks.splice(0, 1)
         }
+
+
+        players.splice(players.indexOf(redCaptain), 1)
+        players.splice(players.indexOf(blueCaptain), 1)
+
 
         while(players.length > 0) {
             const rowPlayers = new ActionRowBuilder<ButtonBuilder>()
-            players.splice(0, 5).forEach((player) => {
+            players.splice(0,5).forEach((player) => {
                 rowPlayers.addComponents(
                     new ButtonBuilder()
                         .setCustomId(`pick_player_${guildId}_${player}`)
                         .setLabel(`${client.users.cache.get(player)?.username || 'undefined'}`)
                         .setStyle(ButtonStyle.Primary)
+                        .setDisabled(redPlayers.includes(player)? true: bluePlayers.includes(player)? true : false)
                 )
 
             })
@@ -139,27 +165,27 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         embedRed.setTitle('Red Team')
         embedRed.setColor('Red')
         embedRed.addFields(
-            { name: '1: ', value: client.users.cache.get(redPlayers[0])?.username || ' ' },
+            { name: '1 (C): ', value: client.users.cache.get(redPlayers[0])?.username || ' ' },
             { name: '2: ', value: client.users.cache.get(redPlayers[1])?.username || ' ' },
             { name: '3: ', value: client.users.cache.get(redPlayers[2])?.username || ' ' },
             { name: '4: ', value: client.users.cache.get(redPlayers[3])?.username || ' ' },
             { name: '5: ', value: client.users.cache.get(redPlayers[4])?.username || ' ' },
             { name: '6: ', value: client.users.cache.get(redPlayers[5])?.username || ' ' },
             { name: '7: ', value: client.users.cache.get(redPlayers[6])?.username || ' ' },
-            { name: '8: ', value: client.users.cache.get(redPlayers[7])?.username || ' ' }
+            { name: 'GK: ', value: client.users.cache.get(redGk)?.username || ' ' }
         )
         const embedBlue = new EmbedBuilder()
         embedBlue.setTitle('Blue Team')
         embedBlue.setColor('Blue')
         embedBlue.addFields(
-            { name: '1: ', value: client.users.cache.get(bluePlayers[0])?.username || ' ' },
+            { name: '1 (C): ', value: client.users.cache.get(bluePlayers[0])?.username || ' ' },
             { name: '2: ', value: client.users.cache.get(bluePlayers[1])?.username || ' ' },
             { name: '3: ', value: client.users.cache.get(bluePlayers[2])?.username || ' ' },
             { name: '4: ', value: client.users.cache.get(bluePlayers[3])?.username || ' ' },
             { name: '5: ', value: client.users.cache.get(bluePlayers[4])?.username || ' ' },
             { name: '6: ', value: client.users.cache.get(bluePlayers[5])?.username || ' ' },
             { name: '7: ', value: client.users.cache.get(bluePlayers[6])?.username || ' ' },
-            { name: '8: ', value: client.users.cache.get(bluePlayers[7])?.username || ' ' }
+            { name: 'GK: ', value: client.users.cache.get(blueGk)?.username || ' ' }
         )
         const channel = client.channels.cache.get(guild.customChannel || '')
         if (!channel || channel.type != ChannelType.GuildText) return
@@ -167,8 +193,11 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
             embeds: [embedRed, embedBlue],
             components: playerComponents
         })
-        channel.send({
-            components: gkComponents
-        })
+        if (gkComponents.length > 0) {
+            channel.send({
+                components: gkComponents
+            })
+        }
+
     }, seconds * 1000)
 }

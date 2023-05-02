@@ -6,13 +6,17 @@ import { BRONZE, ELO_GAP, SILVER } from "../utils/src/constants";
 
 
 
-const customId = 'join_as_attacker_'
+const customId = 'pick_player_'
 
 
 
 export const PickPlayer: buttonInteractionType = {
     customId,
     run: async (client: Client, interaction: Interaction) => {
-        
+        if (!interaction.isButton()) return
+        interaction.reply({
+            content: 'Tıklama sikik',
+            ephemeral: true
+        })
     }
 }
