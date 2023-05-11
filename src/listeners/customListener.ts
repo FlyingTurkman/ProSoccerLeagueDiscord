@@ -69,6 +69,15 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         if (!guild) return
         const guildDiscord = client.guilds.cache.get(guildId)
         if (!guildDiscord) return
+        const channel = client.channels.cache.get(guild.customChannel || '')
+        if (!channel || channel.type != ChannelType.GuildText) return
+        const pickStarted = await CustomLineup.findOne({guildId})
+        if (pickStarted && pickStarted.pickStarted) {
+            channel.send({
+                content: 'Pick started'
+            })
+            return
+        }
         await CustomLineup.findOneAndUpdate({guildId}, {$set: {pickStarted: true}})
         const lineup = await CustomLineup.findOne({guildId})
         if (!lineup) return
@@ -129,6 +138,14 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
             gks.splice(0, 1)
         }
 
+        await CustomLineup.findOneAndUpdate({guildId}, {
+            $set: {
+                redCaptain,
+                blueCaptain,
+                redTeam: redPlayers,
+                blueTeam: bluePlayers
+            }
+        })
 
         players.splice(players.indexOf(redCaptain), 1)
         players.splice(players.indexOf(blueCaptain), 1)
@@ -144,7 +161,6 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
                         .setStyle(ButtonStyle.Primary)
                         .setDisabled(redPlayers.includes(player)? true: bluePlayers.includes(player)? true : false)
                 )
-
             })
             playerComponents.push(rowPlayers)
         }
@@ -187,12 +203,12 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
             { name: '7: ', value: client.users.cache.get(bluePlayers[6])?.username || ' ' },
             { name: 'GK: ', value: client.users.cache.get(blueGk)?.username || ' ' }
         )
-        const channel = client.channels.cache.get(guild.customChannel || '')
-        if (!channel || channel.type != ChannelType.GuildText) return
-        channel.send({
-            embeds: [embedRed, embedBlue],
-            components: playerComponents
-        })
+        if (playerComponents.length > 0) {
+            channel.send({
+                embeds: [embedRed, embedBlue],
+                components: playerComponents
+            })
+        }
         if (gkComponents.length > 0) {
             channel.send({
                 components: gkComponents

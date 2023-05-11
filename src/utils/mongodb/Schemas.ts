@@ -194,6 +194,25 @@ export const customLineupSchema = new Schema({
     captainRole: {
         type: String,
         required: false
+    },
+    redCaptain: {
+        type: String
+    },
+    blueCaptain: {
+        type: String
+    },
+    redGk: {
+        type: String
+    },
+    blueGk: {
+        type: String
+    },
+    redTeam: [String],
+    blueTeam: [String],
+    faze: {
+        type: Number,
+        required: true,
+        default: 0
     }
 })
 
