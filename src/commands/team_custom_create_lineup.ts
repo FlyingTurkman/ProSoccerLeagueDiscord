@@ -11,7 +11,7 @@ export const TeamCustomCreateLineup: Command = {
     description: 'You can create custom lineup for your team',
     options: [
         {type: ROLE, name: 'captain_role', description: 'Custom Captains', required: false},
-        {type: NUMBER, name: 'countdown', description: 'Countdown Seconds', required: false, min_length: 2, max_length: 3}
+        {type: NUMBER, name: 'countdown', description: 'Countdown Seconds', required: false, minValue: 2, maxValue: 300}
     ],
     run: async(client: Client, interaction: CommandInteraction) => {
         const guildId = interaction.guildId
@@ -26,7 +26,7 @@ export const TeamCustomCreateLineup: Command = {
             teamId: guildId
         }, {
             $set: {
-                customChannel: channelId,
+                customChannel: channelId
             }
         })
         if (!team) {
@@ -40,7 +40,11 @@ export const TeamCustomCreateLineup: Command = {
         if (!lineup) {
             await CustomLineup.create({
                 guildId,
-                players: []
+                players: [],
+                pickStarted: false,
+                countDownStarted: false,
+                faze: 0,
+                gk: []
             })
         }
         const newLineup = await CustomLineup.findOne({guildId})

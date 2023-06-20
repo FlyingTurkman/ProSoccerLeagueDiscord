@@ -83,6 +83,7 @@ export const PickPlayer: buttonInteractionType = {
         const allPlayers: string[] = lineup.players
         const notPicked: string[] = allPlayers.filter((player) => !currentPlayers.includes(player))
         if (faze == 0) {
+            //faze 0
             if (captain != redCaptain) {
                 interaction.reply({
                     content: 'It is not your turn',
@@ -103,13 +104,15 @@ export const PickPlayer: buttonInteractionType = {
             while(notPicked.length > 0) {
                 const rowPlayers = new ActionRowBuilder<ButtonBuilder>()
                 notPicked.splice(0,5).forEach((player) => {
-                    rowPlayers.addComponents(
-                        new ButtonBuilder()
-                            .setCustomId(`pick_player_${guildId}_${player}`)
-                            .setLabel(`${client.users.cache.get(player)?.username || 'undefined'}`)
-                            .setStyle(ButtonStyle.Primary)
-                            .setDisabled(redPlayers.includes(player)? true: bluePlayers.includes(player)? true : false)
-                    )
+                    if (!redPlayers.includes(player) && !bluePlayers.includes(player)) {
+                        rowPlayers.addComponents(
+                            new ButtonBuilder()
+                                .setCustomId(`pick_player_${guildId}_${player}`)
+                                .setLabel(`${client.users.cache.get(player)?.username || 'undefined'}`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setDisabled(redPlayers.includes(player)? true: bluePlayers.includes(player)? true : false)
+                        )
+                    }
                 })
                 playerComponents.push(rowPlayers)
             }
@@ -162,6 +165,93 @@ export const PickPlayer: buttonInteractionType = {
                     components: gkComponents
                 })
             }
+        } else if (faze == 1) {
+            //faze 1
+            if (captain != blueCaptain) {
+                interaction.reply({
+                    content: 'It is not your turn',
+                    ephemeral: true
+                })
+                return
+            }
+            await CustomLineup.findOneAndUpdate({guildId}, {
+                $addToSet: {
+                    redTeam: player
+                },
+                $set: {
+                    faze: 2
+                }
+            })
+            bluePlayers.push(player)
+            allPlayers.filter((players) => players == player)
+            while(notPicked.length > 0) {
+                const rowPlayers = new ActionRowBuilder<ButtonBuilder>()
+                notPicked.splice(0,5).forEach((player) => {
+                    if (!redPlayers.includes(player) && !bluePlayers.includes(player)) {
+                        rowPlayers.addComponents(
+                            new ButtonBuilder()
+                                .setCustomId(`pick_player_${guildId}_${player}`)
+                                .setLabel(`${client.users.cache.get(player)?.username || 'undefined'}`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setDisabled(redPlayers.includes(player)? true: bluePlayers.includes(player)? true : false)
+                        )
+                    }
+
+                })
+                playerComponents.push(rowPlayers)
+            }
+            while (gks.length > 0) {
+                const rowGk = new ActionRowBuilder<ButtonBuilder>()
+                gks.splice(0,5).forEach((player) => {
+                    rowGk.addComponents(
+                        new ButtonBuilder()
+                            .setCustomId(`pick_player_${guildId}_${player}`)
+                            .setLabel(`${client.users.cache.get(player)?.username || 'undefined'}`)
+                            .setStyle(ButtonStyle.Success)
+                    )
+                })
+                gkComponents.push(rowGk)
+            }
+            const embedRed = new EmbedBuilder()
+            embedRed.setTitle('Red Team')
+            embedRed.setColor('Red')
+            embedRed.addFields(
+                { name: '1 (C): ', value: client.users.cache.get(redPlayers[0])?.username || ' ' },
+                { name: '2: ', value: client.users.cache.get(redPlayers[1])?.username || ' ' },
+                { name: '3: ', value: client.users.cache.get(redPlayers[2])?.username || ' ' },
+                { name: '4: ', value: client.users.cache.get(redPlayers[3])?.username || ' ' },
+                { name: '5: ', value: client.users.cache.get(redPlayers[4])?.username || ' ' },
+                { name: '6: ', value: client.users.cache.get(redPlayers[5])?.username || ' ' },
+                { name: '7: ', value: client.users.cache.get(redPlayers[6])?.username || ' ' },
+                { name: 'GK: ', value: client.users.cache.get(redGk)?.username || ' ' }
+            )
+            const embedBlue = new EmbedBuilder()
+            embedBlue.setTitle('Blue Team')
+            embedBlue.setColor('Blue')
+            embedBlue.addFields(
+                { name: '1 (C): ', value: client.users.cache.get(bluePlayers[0])?.username || ' ' },
+                { name: '2: ', value: client.users.cache.get(bluePlayers[1])?.username || ' ' },
+                { name: '3: ', value: client.users.cache.get(bluePlayers[2])?.username || ' ' },
+                { name: '4: ', value: client.users.cache.get(bluePlayers[3])?.username || ' ' },
+                { name: '5: ', value: client.users.cache.get(bluePlayers[4])?.username || ' ' },
+                { name: '6: ', value: client.users.cache.get(bluePlayers[5])?.username || ' ' },
+                { name: '7: ', value: client.users.cache.get(bluePlayers[6])?.username || ' ' },
+                { name: 'GK: ', value: client.users.cache.get(blueGk)?.username || ' ' }
+            )
+            if (playerComponents.length > 0) {
+                channel.send({
+                    embeds: [embedRed, embedBlue],
+                    components: playerComponents
+                })
+            }
+            if (gkComponents.length > 0) {
+                channel.send({
+                    components: gkComponents
+                })
+            }
+        }
+        
+        else {
             interaction.reply({
                 content: 'Tıklama sikik',
                 ephemeral: true

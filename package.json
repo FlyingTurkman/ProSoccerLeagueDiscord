@@ -10,7 +10,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "discord.js": "^14.9.0",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "elo-rank": "^1.0.4",
     "mongodb": "^4.13.0",
     "mongoose": "^7.0.3",

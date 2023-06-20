@@ -12,7 +12,9 @@ import { CustomLineup } from "./utils/mongodb/Models";
 
 dotenv.config()
 
-console.log("Bot is starting...");
+
+console.log("Bot is starting...")
+
 
 const client = new Client({
     intents: [

@@ -74,7 +74,7 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
         const pickStarted = await CustomLineup.findOne({guildId})
         if (pickStarted && pickStarted.pickStarted) {
             channel.send({
-                content: 'Pick started'
+                content: 'Pick already started'
             })
             return
         }
@@ -143,7 +143,10 @@ async function countDownTick({seconds, guildId, client, captainRole}: {seconds: 
                 redCaptain,
                 blueCaptain,
                 redTeam: redPlayers,
-                blueTeam: bluePlayers
+                blueTeam: bluePlayers,
+                redGk,
+                blueGk,
+                gk: gks
             }
         })
 
